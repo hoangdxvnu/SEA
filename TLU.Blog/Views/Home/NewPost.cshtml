@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Awnser";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@model TLU.Blog.Models.DataViews.PostView
+@using TLU.Blog.Helpers;
+@using TLU.Blog.Models.DataModels;
+@using TLU.Blog.Models.DataBase;
+<script src="~/Scripts/ckfinder/ckfinder.js"></script>
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#Display").hide();
+        $("#SelectImage").on('click', function (e) {
+            e.preventDefault();
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (url) {
+                $("#Image").val(url);
+                $("#Display").show();
+                $("#Display").attr('src', url);
+            };
+            finder.popup();
+        });
+    });
+</script>
+<script type="text/javascript">
+    var editor;
+    function createEditor(languageCode, id) {
+        var editor = CKEDITOR.replace(id, {
+            language: languageCode
+        });
+    }
+    $(function () {
+        createEditor('vi', 'text');
+    });
+</script>
+<div class="blog-head">
+    <h2>@TLUResourceManager.GetValueByKey("New Post")</h2>
+</div>
+<script src="~/Contents/BlogContents/jquery-1.11.3.min (1).js"></script>
+
+<div class="col-md-9 blog-left">
+    <div >
+        <div class="box box-info">
+            <div class="box-header with-border">
+            </div>
+            @using (Html.BeginForm("NewPost", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            @Html.TextAreaFor(Model => Model.pDescrip, new { @class = "form-control", placeholder = "Descrip :", rows = "5" })
+                            @Html.ValidationMessageFor(Model => Model.pDescrip, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*<label class="col-sm-2 control-label">Topic</label>*@
+                        <div class="col-sm-12">
+                            @*<input type="text" name="pDescrip" class="form-control" placeholder="Descrip">*@
+                            @Html.DropDownListFor(Model => Model.pNameTopic, new SelectList(new TopicModel().GetListNameTopic()),new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.Avatar, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(model => model.Avatar, new { @class = "form-control", id = "Image", placeholder = "Avatar :" })<br />
+                            <a id="SelectImage" href="#">Chọn</a><br />
+                            <img src="" id="Display" style="width:30%" />
+                            @Html.ValidationMessageFor(model => model.Avatar, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <label class="col-sm-1 control-label">Content</label><br />
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            @Html.TextAreaFor(Model => Model.pContent, new { @class = "form-control", rows = "10", placeholder = "Enter ...", id = "text" })
+                            @Html.ValidationMessageFor(Model => Model.pContent, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <input type="submit" class="btn btn-info pull-right" value="Create Post"/>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="col-md-3 single-page-right">
+    <div class="category blog-ctgry">
+        <h4>@TLUResourceManager.GetValueByKey("Topic")</h4>
+        <div class="list-group">
+            <ul>
+                @foreach (var item in (ViewBag.ListTopic as List<Topic>))
+                {
+                    <li style="list-style-type: none;">
+                        <a href="single.html" class="list-group-item">@item.Name</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="clearfix"> </div>
+
+
+
+

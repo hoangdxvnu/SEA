@@ -1,0 +1,115 @@
+﻿@model TLU.Blog.Models.DataViews.PostView
+
+@{
+    ViewBag.Page = "Post";
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section Header{
+    @ViewBag.Page
+}
+@section Title{
+    @ViewBag.Title
+}
+<script src="~/Scripts/ckfinder/ckfinder.js"></script>
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#Display").hide();
+        $("#SelectImage").on('click', function (e) {
+            e.preventDefault();
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (url) {
+                $("#Image").val(url);
+                $("#Display").show();
+                $("#Display").attr('src', url);
+            };
+            finder.popup();
+        });
+    });
+</script>
+<script type="text/javascript">
+    var editor;
+    function createEditor(languageCode, id) {
+        var editor = CKEDITOR.replace(id, {
+            language: languageCode
+        });
+    }
+    $(function () {
+        createEditor('vi', 'text');
+    });
+</script>
+@if (Model.Avatar == null)
+{
+    <script>
+        $(document).ready(function () {
+            $("#Display").hide();
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(document).ready(function () {
+            $("#Display").show();
+        });
+    </script>
+}
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Post</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="box-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Descrip</label>
+                <div class="col-sm-10">
+
+                    @Html.EditorFor(Model => Model.pDescrip, new { htmlAttributes = new { @class = "form-control" }})
+                    @Html.ValidationMessageFor(Model => Model.pDescrip, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Topic</label>
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(Model=>Model.pNameTopic, new SelectList(new TLU.Blog.Models.DataModels.TopicModel().GetListNameTopic()), new { @class = "form-control" })
+                    
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Avatar, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Avatar, new { @class = "form-control", id = "Image" })<br />
+                    <a id="SelectImage" href="#">Chọn</a><br />
+                    <img src="@Model.Avatar" id="Display" style="width:30%" />
+                    @Html.ValidationMessageFor(model => model.Avatar, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Content</label>
+                <div class="col-sm-10">
+                    @Html.TextAreaFor(Model => Model.pContent, new { @class = "form-control", rows = "10", placeholder = "Enter ...", id = "text" })
+                    @Html.ValidationMessageFor(Model => Model.pContent, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

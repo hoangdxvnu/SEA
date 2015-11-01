@@ -1,0 +1,49 @@
+﻿@model PagedList.PagedList<TLU.Blog.Models.DataBase.Post>
+@using PagedList.Mvc
+@using System.Web.Mvc
+@using TLU.Blog.Models.DataBase
+@using TLU.Blog.Models.DataModels
+@{
+    ViewBag.Title = "Answer";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@using TLU.Blog.Helpers;
+<div class="blog-head">
+    <h2>@TLUResourceManager.GetValueByKey("Post")</h2>
+    <a href="@Url.Action("NewPost","Home")" ><h3 style="height: 50px;"><span class="label label-success">Create Post</span></h3></a>
+</div>
+<div class="col-md-8 blog-left">
+    @foreach (var item in Model)
+    {
+        <div class="blog-info">
+            <h3><a href="single.html">@(new TopicModel().GetNameById(item.TopicID))</a></h3>
+            <p>Posted By <a href="#">@(new AccountModel().GetNameById(item.AccountID))</a> &nbsp;&nbsp; @item.PostDate &nbsp;&nbsp;</p>
+            <div class="blog-info-text">
+                <div class="blog-img">
+                    <a href="@Url.Action("Post","Home", new { id= item.ID})"> <img src="@item.Avatar" class="img-responsive zoom-img" alt="" /></a>
+                </div>
+                <p class="snglp">
+                    @item.Descrip
+                </p>
+                <a href='@Url.Action("Post","Home", new { id= item.ID})' class="btn btn-primary hvr-rectangle-in">Read More</a>
+            </div>
+        </div>
+    }
+    
+    
+
+</div>
+<div class="col-md-4 single-page-right">
+    <div class="category blog-ctgry">
+        <h4>@TLUResourceManager.GetValueByKey("Topic")</h4>
+        <div class="list-group">
+            @foreach (var item in (ViewBag.ListTopic as List<Topic>))
+            {
+                <a href='@Url.Action("Answer", "Home", new { item.ID })' class="list-group-item ">@item.Name</a>
+            }
+        </div>
+    </div>
+</div>
+<div class="clearfix"> </div>
+@Html.PagedListPager(Model, Page => Url.Action("Answer", "Home", new { id = (ViewBag.Type as Topic).ID, Page }))
+

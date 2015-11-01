@@ -1,0 +1,86 @@
+﻿
+<script src="~/Scripts/ckfinder/ckfinder.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#SelectImageA").on('click', function (e) {
+            e.preventDefault();
+            var finder = new CKFinder();
+            finder.popup();
+        });
+    });
+</script>
+<section class="sidebar">
+    <!-- Sidebar user panel -->
+    <div class="user-panel">
+        <div class="pull-left image">
+            <img src="@ViewBag.Profile.Avatar" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+            <p>@ViewBag.Profile.FirstName</p>
+            <a href="@Url.Action("Home", "AdminAbout")"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+    </div>
+    <!-- search form -->
+    <form action="@Url.Action("Home", "AdminAbout")" method="get" class="sidebar-form">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search...">
+            <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <!-- /.search form -->
+    <!-- sidebar menu: : style can be found in sidebar.less -->
+    @{ 
+
+    }
+    <ul class="sidebar-menu">
+        <li class="header">MAIN NAVIGATION</li>
+        
+        <li class="active treeview">
+            <a href="@Url.Action("Index", "AdminHistory")">
+                <i class="fa fa-user"></i> <span>History</span>
+            </a>
+        </li>
+        <li class="active treeview">
+            <a href="@Url.Action("Index", "AdminAccount")">
+                <i class="fa fa-user"></i> <span>Account</span>
+            </a>
+        </li>
+        <li class="active treeview">
+            <a href="@Url.Action("Index", "AdminPosts")">
+                <i class="fa fa-folder"></i> <span>Posts</span>
+            </a>
+        </li>
+        <li class="active treeview">
+            <a href="@Url.Action("Index", "AdminTopic")">
+                <i class="fa fa-folder"></i> <span>Topic</span>
+            </a>
+        </li>
+        <li class="active treeview">
+            <a href="@Url.Action("Index", "AdminAbout")">
+                <i class="fa fa-folder"></i> <span>About</span>
+            </a>
+        </li>
+        <li class="active treeview">
+            <a href="@Url.Action("Index", "AdminFeelBack")">
+                <i class="fa fa-folder"></i> <span>FeelBack</span>
+            </a>
+        </li>
+        <li class="active treeview">
+            <a href="@Url.Action("Index", "AdminNavigation")">
+                <i class="fa fa-user"></i> <span>Navigation</span>
+            </a>
+        </li>
+        <li class="active treeview">
+            <a href="@Url.Action("Index", "AdminConfigs")">
+                <i class="fa fa-user"></i> <span>Configs</span>
+            </a>
+        </li>
+        <li class="active treeview">
+            <a href="#" id="SelectImageA">
+                <i class="fa fa-folder"></i> <span>Image</span>
+            </a>
+        </li>
+    </ul>
+</section>

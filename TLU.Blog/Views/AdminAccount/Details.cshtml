@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using PagedList.Mvc
+@section Header{
+    Account
+}
+@section Title{
+    @ViewBag.Title
+}
+<div>
+    <p>
+        @Html.ActionLink("Profile", "ProfileDetails", new { id = Model })<br />
+        @Html.ActionLink("Account", "AccountDetails", new { id = Model })<br />
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>
+

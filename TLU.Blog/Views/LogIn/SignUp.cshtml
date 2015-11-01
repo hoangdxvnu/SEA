@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "SignUp";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<body class="hold-transition login-page">
+    <link rel="stylesheet" href="../Contents/AdminContents/dist/css/AdminLTE.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="../Contents/AdminContents/plugins/iCheck/square/blue.css">
+    <div class="register-box">
+        <div class="register-logo">
+            <a href="../../index2.html"><b>SEA</b>Blog</a>
+        </div>
+        <div class="register-box-body">
+            <p class="login-box-msg">@Html.ValidationSummary()</p>
+            <form action="@Url.Action("SignUp","LogIn")" method="post">
+                <div class="form-group has-feedback">
+                    <input type="text" name="FirstName" class="form-control" placeholder="FirstName">
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" name="SurName" class="form-control" placeholder="Sur name">
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="date" name="Birthday" class="form-control" placeholder="Birthday">
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" name="UserName" class="form-control" placeholder="Email">
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" name="Password" class="form-control" placeholder="Password">
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" name="ConfirmPassword" class="form-control" placeholder="Confirm password">
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input type="checkbox" name="a"> I agree to the <a href="#">terms</a>
+                            </label>
+                        </div>
+                    </div><!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign Up</button>
+                    </div><!-- /.col -->
+                </div>
+            </form>
+            <div class="social-auth-links text-center">
+                <p>- OR -</p>
+                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using Facebook</a>
+                <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using Google+</a>
+            </div>
+            <a href="login.html" class="text-center">I already have a membership</a>
+        </div><!-- /.form-box -->
+    </div><!-- /.register-box -->
+    <!-- jQuery 2.1.4 -->
+    <!-- Bootstrap 3.3.5 -->
+    <script src="../Contents/AdminContents/bootstrap/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="../Contents/AdminContents/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- iCheck -->
+    <script src="../Contents/AdminContents/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+    </script>
+</body>

@@ -1,0 +1,74 @@
+﻿@model TLU.Blog.Models.DataBase.Config
+
+@{
+    ViewBag.Page = "Config";
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Header{
+    @ViewBag.Page
+}
+@section Title{
+    @ViewBag.Title
+}
+<div>
+    <h4>Config</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Order)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        @if (Model.IsActive == null)
+        {
+            <dd>Chưa Kích Hoạt</dd>
+        }
+        else
+        {
+            <dd>Đã Kích Hoạt</dd>
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LangId)
+        </dt>
+
+       @if (Model.LangId == 0)
+       {
+            <dd>Tiếng Việt</dd>
+       }
+       else
+       {
+            <dd>Tiếng Anh</dd>
+       }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,67 @@
+﻿ 
+<h4>Responses</h4>
+@foreach (var item in (new TLU.Blog.Models.DataModels.CommentModel().GetCommentOrderByDate(ViewBag.PostId)))
+{
+    <div class="media response-info" id="DivComment_@item.ID">
+        <div class="media-left response-text-left">
+            <a href="#">
+                <img class="media-object" src="@item.Account.Profile.Avatar" style="width: 100%;" alt="" />
+            </a>
+            <h5><a href="#">@item.Account.Profile.FirstName</a></h5>
+        </div>
+        <div class="media-body response-text-right">
+            <div id="CT_@item.ID">
+                <p>
+                    @item.CommentContent
+                </p>
+            </div>
+            <ul>
+                <li>@item.CommentDate</li>
+                @if (ViewBag.Profile != null && ((TLU.Blog.Models.DataViews.UserSession)(ViewBag.Profile)).Id == item.Account.ID)
+                {
+                    <li><input onclick="Remove(@item.ID)" type="submit" value="Remove" /></li>
+                    <li><input onclick="CallEdit('CT_@item.ID',@item.ID)" type="submit" value="Edit" /></li>
+                }
+                <li><input onclick="ChangReply('Reply_@item.ID')" type="submit" value="Reply" /></li>
+            </ul>
+            <div class="media response-info" id="ReplyAll_@item.ID">
+                @foreach (var item2 in (new TLU.Blog.Models.DataModels.CommentModel().GetList(item.ID)))
+                {
+                    <div id="DivComment_@item2.ID">
+                        <div class="media-left response-text-left">
+                            <a href="#">
+                                <img class="media-object" src="@item2.Account.Profile.Avatar" style="width: 100%;" alt="" />
+                            </a>
+                            <h5><a href="#">@item2.Account.Profile.FirstName</a></h5>
+                        </div>
+                        <div class="media-body response-text-right">
+                            <p>
+                                @item2.CommentContent
+                            </p>
+                            <ul>
+                                <li>@item2.CommentDate</li>
+                                @if (ViewBag.Profile != null && ((TLU.Blog.Models.DataViews.UserSession)(ViewBag.Profile)).Id == item2.Account.ID)
+                                {
+                                    <li><input onclick="Remove(@item2.ID)" type="submit" value="Remove" /></li>
+                                    <li><input onclick="CallEdit('CT_@item2.ID',@item2.ID)" type="submit" value="Edit" /></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+                <div class="clearfix"> </div>
+            </div>
+            <div class="media-body response-text-right">
+                <div class="form-group" id="Reply_@item.ID" style=" display:none;">
+                    <p>New Reply</p>
+                    <textarea id="textarea_@item.ID" class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                    <ul>
+                        <li><input onclick="AddReply('textarea_@item.ID',@item.ID,'ReplyAll_@item.ID')" value="Comment" type="submit" /></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+}
+

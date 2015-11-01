@@ -1,0 +1,226 @@
+﻿@model TLU.Blog.Models.DataBase.Post
+@using TLU.Blog.Models.DataModels 
+@using TLU.Blog.Models.DataViews          
+@{
+    ViewBag.Title = "Answer";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    
+}
+<script src="~/Scripts/jquery-1.11.3.min.js"></script>
+<script>
+    function AddComment(DivContent, PostId) {
+        Content = document.getElementById(DivContent).value;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AddComment","Home")',
+            data: { pContent: Content, pPostId: PostId },
+            success: function (result) {
+                $(".response").html(result);
+            }
+        });
+        document.getElementById(DivContent).value = "";
+        $("#CountComment").load("/CountComment/@Model.ID");
+    };
+    function ChangReply(DivContent) {
+        if (document.getElementById(DivContent).style.display == "none") {
+            document.getElementById(DivContent).style.display = "block";
+        }
+        else {
+            document.getElementById(DivContent).style.display = "none";
+        }
+
+    }
+
+    function Remove(CommentId) {
+        var DivRemove = "DivComment_" + CommentId;
+        document.getElementById(DivRemove).style.display = "none";
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("RemoveComment", "Home")',
+            data: { pId: CommentId },
+        });
+        $("#CountComment").load("/CountComment/@Model.ID");
+    }
+
+    function CallEdit(DivCT, Id) {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("EditComment", "Home")',
+            data: { pId: Id },
+            success: function (result) {
+                $("#" + DivCT).html(result);
+            }
+        });
+    }
+    function Save(DivCT, Id, ContentId) {
+        var Content = $('#' + ContentId).val();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("EditComment", "Home")',
+            data: { pId: Id, pContent: Content },
+            success: function (result) {
+                $("#" + DivCT).html(result);
+            },
+        });
+    };
+    function AddReply(DivContent, ParentId, DivResult) {
+        Content = document.getElementById(DivContent).value;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AddReply","Home")',
+            data: { pReplyContent: Content, pCommentId: ParentId },
+            success: function (result) {
+                $("#" + DivResult).html(result);
+            }
+        });
+        document.getElementById(DivContent).value = "";
+        document.getElementById('Reply_' + ParentId).style.display = "none";
+    }
+</script>
+<div class="blog-head">
+    <h2>@Model.Name</h2>
+</div>
+<div class="col-md-8 blog-left">
+    <div class="blog-info">
+        <div class="blog-info-text">
+            <div class="blog-img">
+                @Html.Raw(HttpUtility.HtmlDecode(Model.PostContent))
+            </div>
+        </div>
+        <div class="comment-icons">
+            <ul>
+                <li><span></span><a href="#">@(new AccountModel().GetNameById(Model.Account.ID))</a> </li>
+                <li><span class="clndr"></span>@Model.PostDate</li>
+                <li><span class="admin"></span> <a href="#">@Model.Account.Level</a></li>
+                <li><span class="cmnts"></span> <a id="CountComment">@(new CommentModel().GetCountComment(Model.ID))</a></li>
+                <!--Cần sửa-->
+                <!--<li><a href="#" class="like">15</a></li>-->
+                <li>
+                    <div id="ViewLike">
+                        <div>
+                            @if (!(new VotesModel().IsLike(Model.ID)))
+                            {
+                                <a class="like" id="like" href="#">@Model.Like</a>
+                            }
+                            else
+                            {
+                                <a id="like" href="#"><img src=" ~/Contents/BlogContents/images/dislike.PNG" />@Model.Like</a>
+                            }
+                            <script>
+                                $(document).ready(function () {
+                                    $("#like").on('click', function (e) {
+                                        e.preventDefault();
+                                        $("#ViewLike").load('@Url.Action("ViewLike", "Home",new { pId=Model.ID })');
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </li>
+                <!---->
+            </ul>
+        </div>
+        <div class="admin-text">
+            <h5>Written By Admin</h5>
+            <div class="admin-text-left">
+                <a href="#"><img src="@Model.Account.Profile.Avatar" style="width: 100%;" alt="" /></a>
+            </div>
+            <div class="admin-text-right">
+                <p>
+                    @Model.Descrip
+                </p>
+                <span>View all posts by:<a href="#"> @Model.Account.Profile.FirstName </a></span>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        <div class="response">
+            <h4>Responses</h4>
+            @foreach (var item in (new CommentModel().GetCommentOrderByDate(Model.ID)))
+            {
+                <div class="media response-info" id="DivComment_@item.ID">
+                    <div class="media-left response-text-left">
+                        <a href="#">
+                            <img class="media-object" src="@item.Account.Profile.Avatar" style="width: 100%;" alt="" />
+                        </a>
+                        <h5><a href="#">@item.Account.Profile.FirstName</a></h5>
+                    </div>
+                    <div class="media-body response-text-right">
+                        <div id="CT_@item.ID">
+                            <p>
+                                @item.CommentContent
+                            </p>
+                        </div>
+                        <ul>
+                            <li>@item.CommentDate</li>
+                            @if (ViewBag.Profile!=null&&((UserSession)(ViewBag.Profile)).Id == item.Account.ID)
+                            {
+                            <li><input onclick="Remove(@item.ID)" type="submit" value="Remove"/></li>
+                            <li><input onclick="CallEdit('CT_@item.ID',@item.ID)" type="submit" value="Edit" /></li>
+                            }
+                            <li><input onclick="ChangReply('Reply_@item.ID')" type="submit" value="Reply" /></li>
+                        </ul>
+                        <div class="media response-info" id="ReplyAll_@item.ID">
+                            @foreach (var item2 in (new CommentModel().GetList(item.ID)))
+                            {
+                                <div id="DivComment_@item2.ID">
+                                    <div class="media-left response-text-left">
+                                        <a href="#">
+                                            <img class="media-object" src="@item2.Account.Profile.Avatar" style="width: 100%;" alt="" />
+                                        </a>
+                                        <h5><a href="#">@item2.Account.Profile.FirstName</a></h5>
+                                    </div>
+                                    <div class="media-body response-text-right">
+                                        <div id="CT_@item2.ID">
+                                            <p>
+                                                @item2.CommentContent
+                                            </p>
+                                        </div>
+                                        <ul>
+                                            <li>@item2.CommentDate</li>
+                                            @if (ViewBag.Profile != null && ((UserSession)(ViewBag.Profile)).Id == item2.Account.ID)
+                                            {
+                                                <li><input onclick="Remove(@item2.ID)" type="submit" value="Remove" /></li>
+                                                <li><input onclick="CallEdit('CT_@item2.ID',@item2.ID)" type="submit" value="Edit" /></li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div class="media-body response-text-right">
+                            <div class="form-group" id="Reply_@item.ID" style=" display:none;">
+                                <p>New Reply</p>
+                                <textarea id="textarea_@item.ID" class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                                <ul>
+                                    <li><input onclick="AddReply('textarea_@item.ID',@item.ID,'ReplyAll_@item.ID')" value="Comment" type="submit" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="coment-form">
+        <h4>Leave your comment</h4>
+        <div>
+            <textarea type="text" id="a" placeholder="Your Comment..."></textarea>
+            <input type="submit" onclick="AddComment('a',@Model.ID)" value="SUBMIT">
+        </div>
+    </div>
+</div>
+<div class="col-md-4 single-page-right">
+    <div class="category blog-ctgry">
+        <h4>@TLU.Blog.Helpers.TLUResourceManager.GetValueByKey("Topic")</h4>
+        <div class="list-group">
+            @foreach (var item in (ViewBag.ListTopic as List<TLU.Blog.Models.DataBase.Topic>))
+            {
+                <a href='@Url.Action("Answer", "Home", new { item.ID })' class="list-group-item ">@item.Name</a>
+            }
+        </div>
+    </div>
+</div>
+<div class="clearfix"> </div>
+

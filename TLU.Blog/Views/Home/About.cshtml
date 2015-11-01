@@ -1,0 +1,57 @@
+﻿@model TLU.Blog.Models.DataBase.About
+@{
+    ViewBag.Title = "About";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using TLU.Blog.Helpers;
+<div class="about-head">
+    <h2>@TLUResourceManager.GetValueByKey("About")</h2>
+    <h4>@Model.Name</h4>
+    <p>
+        @Model.Descritp
+    </p>
+</div>
+<div class="video-grid">
+    <div class="col-md-6 video">
+        <img src="@Model.Image" class="img-responsive"/>
+    </div>
+    <div class="col-md-6 video-info">
+        @Html.Raw(HttpUtility.HtmlDecode(Model.Content))
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="our_work">
+    <h3>Our Campus</h3>
+    <div class="blog-section">
+        <div class="col-md-4 camp-grid">
+            <a href="single.html"><img src="~/Contents/BlogContents/images/u1.jpg" class="img-responsive" alt="" /></a>
+            <h4><a href="single.html">University</a></h4>
+            <p>
+                Quisque volutpat odio sit amet mi volutpat, a bibendum ante vulputate. Praesent bibendum lorem
+                non sem cursus, eu tempus leo condimentum. Sed nec ullamcorper massa.
+            </p>
+            <a href="single.html" class="more">[ Read More..]</a>
+        </div>
+        <div class="col-md-4 camp-grid">
+            <a href="single.html"><img src="~/Contents/BlogContents/images/u2.jpg" class="img-responsive" alt="" /></a>
+            <h4><a href="single.html">Class Rooms</a></h4>
+            <p>
+                Quisque volutpat odio sit amet mi volutpat, a bibendum ante vulputate. Praesent bibendum lorem
+                non sem cursus, eu tempus leo condimentum. Sed nec ullamcorper massa.
+            </p>
+            <a href="single.html" class="more">[ Read More..]</a>
+        </div>
+        <div class="col-md-4 camp-grid">
+            <a href="single.html"><img src="~/Contents/BlogContents/images/u3.jpg" class="img-responsive" alt="" /></a>
+            <h4><a href="single.html">Liberary</a></h4>
+            <p>
+                Quisque volutpat odio sit amet mi volutpat, a bibendum ante vulputate. Praesent bibendum lorem
+                non sem cursus, eu tempus leo condimentum. Sed nec ullamcorper massa.
+            </p>
+            <a href="single.html" class="more">[ Read More..]</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+

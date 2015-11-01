@@ -1,0 +1,68 @@
+﻿@model PagedList.PagedList<TLU.Blog.Models.DataBase.Account>
+@{
+    ViewBag.Page = "Post";
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@using PagedList.Mvc
+@section Header{
+    Post
+}
+@section Title{
+    @ViewBag.Title
+}
+<div class="col-xs-12">
+
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">About</h3>
+            <div>
+                <div class="box-header with-border">                    @Html.ActionLink("Create", "Create")
+                    <div class="box-tools pull-right">
+                        <div class="has-feedback">
+                            <input type="text" class="form-control input-sm" placeholder="Search Mail">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </div>
+                    </div><!-- /.box-tools -->
+                </div><!-- /.box-header -->
+            </div>
+        </div>
+        <div>
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>UserName</th>
+                            <th>level</th>
+                            <th>Create Date</th>
+                            <th>Active By</th>
+                            <th>State</th>
+                            <th>Tool</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.UserName</td>
+                                <td>@item.Level</td>
+                                <td>@item.CreatedDate</td>
+                                <td>@(item.ActiveBy==0?"":(new TLU.Blog.Models.DataModels.AccountModel().GetUserName(item.ActiveBy)))</td>
+                                <td>@(item.IsActive==true?"Đã Kích Hoạt":"Chưa Kích Hoạt")</td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ID })|
+                                    @Html.ActionLink("Details", "Details", new { id = item.ID })|
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @Html.PagedListPager(Model, Page => Url.Action("Index", new { Page }))
+            </div>
+        </div><!-- /.box-body -->
+    </div><!-- /.box -->
+</div>
+
+
+

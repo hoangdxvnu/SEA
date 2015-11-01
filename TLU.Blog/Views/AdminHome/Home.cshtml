@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Page = "Home";
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section Header{
+    @ViewBag.Page
+}
+@section Title{
+    @ViewBag.Title
+}
+<section class="content-header">
+    <h1>
+        User Profile
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Profile Image -->
+            @RenderPage("~/Views/Shared/_Profile1.cshtml")
+            <!-- About Me Box -->
+        </div><!-- /.col -->
+        <div class="col-md-9">
+            @RenderPage("~/Views/Shared/_Profile2.cshtml")
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</section><!-- /.content -->

@@ -1,0 +1,126 @@
+﻿@model TLU.Blog.Models.DataBase.About
+@using TLU.Blog.Models.DataModels;
+@{
+    ViewBag.Page = "About";
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Header{
+    Post
+}
+@section Title{
+    @ViewBag.Title
+}
+
+<div>
+    <h4>About</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descritp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descritp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        @if (Model.Image != null)
+        {
+            <dd>
+                <img id="Image" src="@Model.Image" style="width:25%" />
+            </dd>
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.Raw(HttpUtility.HtmlDecode(Model.Content))
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderDisplay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderDisplay)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @(new HistoryModel().GetNameAccountById(Model.CreatedBy))
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EditBy)
+        </dt>
+
+        <dd>
+            @(new HistoryModel().GetNameAccountById(Model.EditBy))
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EditDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EditDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        @if (Model.IsActive == null)
+        {
+            <dd>Chưa Kích Hoạt</dd>
+        }
+        else
+        {
+            <dd>Đã Kích Hoạt</dd>
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LangId)
+        </dt>
+
+        @if (Model.LangId == 0)
+        {
+            <dd>Tiếng Việt</dd>
+        }
+        else
+        {
+            <dd>Tiếng Anh</dd>
+        }
+
+        
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

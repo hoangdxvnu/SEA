@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Header{
+    Account
+}
+@section Title{
+    @ViewBag.Title
+}
+<div>
+    <p>
+        @Html.ActionLink("Profile", "ProfileEdit", new { id = Model })<br />
+        @Html.ActionLink("Edit Password", "PasswordEdit", new { id = Model })<br />
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>
+

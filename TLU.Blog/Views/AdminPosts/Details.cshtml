@@ -1,0 +1,200 @@
+﻿@model TLU.Blog.Models.DataBase.Post
+
+@{
+    ViewBag.Page = "Post";
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@using TLU.Blog.Models.DataBase;
+@using TLU.Blog.Models.DataModels;
+@section Header{
+    @ViewBag.Page
+}
+@section Title{
+    @ViewBag.Title
+}
+<script src="~/Contents/BlogContents/jquery-1.11.3.min (1).js"></script>
+<script>
+    $(document).ready(function () {
+        $("#a").click(function (e) {
+            e.preventDefault();
+            $("#b").toggle();
+        });
+    });
+</script>
+
+<div class="col-md-12">
+    <div class="box">
+        <dl class="dl-horizontal">
+            <dt>
+                Name Topic
+            </dt>
+
+            <dd>
+                @(new TopicModel().GetNameById(Model.TopicID))
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Descrip)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Descrip)
+            </dd>
+            @if (Model.Avatar != null)
+            {
+            <dt>
+                @Html.DisplayNameFor(Model => Model.Avatar)
+            </dt>
+
+            <dd>
+                <img src="@Model.Avatar" style="width:25%" />
+            </dd>
+            }
+
+            <dt>
+                @Html.DisplayNameFor(Model => Model.AccountID)
+            </dt>
+
+            <dd>
+                @(new HistoryModel().GetNameAccountById(Model.AccountID))
+            </dd>
+
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PostDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PostDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Like)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Like)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </dt>
+
+            @if (Model.IsActive == null)
+            {
+            <dd>Chưa Kích Hoạt</dd>
+            }
+            else
+            {
+            <dd>Đã Kích Hoạt</dd>
+            }
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LangId)
+            </dt>
+
+            @if (Model.LangId == 0)
+            {
+            <dd>Tiếng Việt</dd>
+            }
+            else
+            {
+            <dd>Tiếng Anh</dd>
+            }
+
+            @*<dt>
+                    @Html.DisplayNameFor(model => model.Permission)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Permission)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.ParentId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.ParentId)
+                </dd>*@
+            
+            <dd></dd>
+        </dl>
+        
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="box">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.PostContent)
+            </dt>
+            <dd>
+                @Html.Raw(HttpUtility.HtmlDecode(Model.PostContent))
+            </dd>
+            <dt>
+                <a id="a" href="#">Responses</a>
+            </dt>
+            <dd id="b">
+                @foreach (var item in (new CommentModel().GetCommentOrderByDate(Model.ID) as List<TLU.Blog.Models.DataBase.Comment>))
+            {
+                    <div class="media response-info">
+
+                        @*Thong Tin*@
+
+                        <div class="media-left response-text-left">
+                            <a href="#">
+                                <img class="media-object" src="@item.Account.Profile.Avatar" alt="" style=" width: 64px;" />
+                            </a>
+                            <h5><a href="#">@(new AccountModel().GetNameById(item.AccountID))</a></h5>
+                        </div>
+
+                        @*noi Dung*@
+
+                        <div class="media-body response-text-right">
+                            <p>
+                                Content: @item.CommentContent
+                            </p>
+                            <p>
+                                Ngày Comment: @item.CommentDate
+                            </p>
+                            <div id="ReplyContent_@item.ID">
+                                @foreach (var item2 in (new CommentModel().GetList(item.ID)))
+                            {
+                                    <div class="media response-info">
+                                        <div class="media-left response-text-left">
+                                            <a href="#">
+                                                <img class="media-object" src="@item2.Account.Profile.Avatar" alt="" style=" width: 64px;" />
+                                            </a>
+                                            <h5><a href="#">@(new AccountModel().GetNameById(item2.AccountID))</a></h5>
+                                        </div>
+                                        <div class="media-body response-text-right">
+                                            <p>
+                                                Content: @item2.CommentContent
+                                            </p>
+                                            <p>
+                                                Ngày Comment: @item2.CommentDate
+                                            </p>
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                            }
+                            </div>
+                            <div class="media-body response-text-right" id="NewComment_@item.ID">
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+            }
+            </dd>
+        </dl>
+</div>
+
+</div>
+
+
+

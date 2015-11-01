@@ -1,0 +1,28 @@
+﻿@foreach (var item2 in (new TLU.Blog.Models.DataModels.CommentModel().GetList(ViewBag.ID)))
+{
+    <div id="DivComment_@item2.ID">
+        <div class="media-left response-text-left">
+            <a href="#">
+                <img class="media-object" src="@item2.Account.Profile.Avatar" style="width: 100%;" alt="" />
+            </a>
+            <h5><a href="#">@item2.Account.Profile.FirstName</a></h5>
+        </div>
+        <div class="media-body response-text-right">
+            <div id="CT_@item2.ID">
+                <p>
+                    @item2.CommentContent
+                </p>
+            </div>
+            <ul>
+                <li>@item2.CommentDate</li>
+                @if (ViewBag.Profile != null && ((TLU.Blog.Models.DataViews.UserSession)(ViewBag.Profile)).Id == item2.Account.ID)
+                {
+                    
+                    <li><input onclick="Remove(@item2.ID)" type="submit" value="Remove" /></li>
+                    <li><input onclick="CallEdit('CT_@item2.ID',@item2.ID)" type="submit" value="Edit" /></li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
