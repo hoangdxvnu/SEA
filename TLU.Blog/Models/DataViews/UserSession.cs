@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Web;
 
 namespace TLU.Blog.Models.DataViews
@@ -11,5 +12,6 @@ namespace TLU.Blog.Models.DataViews
         public string UserName { get; set; }
         public string Level { get; set; }
         public string FirstName { get; set; }
+        public SecureString Token { get; set; }
     }
 }

@@ -7,6 +7,9 @@ using TLU.Blog.Models.DataBase;
 using TLU.Blog.Models.DataViews;
 using PagedList;
 using TLU.Blog.Helpers;
+using System.Data.Entity.Core.Objects;
+using System.Security;
+using TLU.Blog.Security;
 namespace TLU.Blog.Models.DataModels
 {
     public class AccountModel
@@ -96,13 +99,27 @@ namespace TLU.Blog.Models.DataModels
         }
         public UserSession GetUserSession(string UserName)
         {
+
             var data = _db.Accounts.SingleOrDefault(x => x.UserName == UserName);
             UserSession result = new UserSession();
             result.Id = data.ID;
             result.UserName = data.UserName;
             result.Level = data.Level;
             result.FirstName = data.Profile.FirstName;
+            result.Token = GetTokenSession(data.ID);
             return result;
+        }
+
+        public SecureString GetTokenSession(int Id)
+        {
+            var secruString = new SecureString();
+            
+
+            var generalValue = _db.Database.SqlQuery<string>(string.Format("SELECT dbo.TLU_sys_GenerateToKen({0})", Id.ToString())).FirstOrDefault();
+
+            secruString = TLUSecureString.convertToSecureString(generalValue.ToString());
+
+            return secruString;
         }
         public string GetUserName(int? Id)
         {
@@ -151,5 +168,6 @@ namespace TLU.Blog.Models.DataModels
             result.UserName = data.UserName;
             return result;
         }
+
     }
 }

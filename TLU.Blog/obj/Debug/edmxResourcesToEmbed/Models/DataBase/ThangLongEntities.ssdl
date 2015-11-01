@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="ThangLongModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="ThangLongModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="About">
     <Key>
       <PropertyRef Name="ID" />
@@ -372,6 +372,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="TLU_sys_GenerateToKen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+    <Parameter Name="Parameter" Type="nvarchar" Mode="In" />
+  </Function>
   <EntityContainer Name="ThangLongModelStoreContainer">
     <EntitySet Name="About" EntityType="Self.About" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
