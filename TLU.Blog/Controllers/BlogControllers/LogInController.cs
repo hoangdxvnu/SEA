@@ -60,6 +60,7 @@ namespace TLU.Blog.Controllers
         {
             if(a==null)
             {
+                // Using Resource for get text string
                 ModelState.AddModelError("","Bạn chưa đồng ý điều khoản");
                 return View(Data);
             }
@@ -73,6 +74,7 @@ namespace TLU.Blog.Controllers
                         Account account = new Account();
                         account.UserName = Data.UserName;
                         account.Password = Data.Password;
+                        // Define constant
                         account.Level = "NORMAL";
                         account.IsActive = true;
                         account.ActiveBy = 0;

@@ -43,6 +43,8 @@ namespace TLU.Blog.Controllers
         public ActionResult Answer(int id=11,int Page=1,int PageSize=3)
         {
             ViewBag.ListTopic = new TopicModel().GetListTopicParentOrderByPosition();
+
+            // reusable Gettopic?? Override method??
             ViewBag.Type = new TopicModel().GetTopicById(id);
             if (id==11)
             {
@@ -50,6 +52,8 @@ namespace TLU.Blog.Controllers
             }
             else if(id==10)
             {
+
+                // Brief why do you check id equal 10
                 return View(new PostModel().GetPageListOrderByTimeIsActive(Page, PageSize));
             }
             return View(new PostModel().GetPageListByIdTopic(id,Page,PageSize));
@@ -77,6 +81,8 @@ namespace TLU.Blog.Controllers
         }
         [HttpPost]
         [HasRule(RuleId = ("CREATE_POST"))]
+
+        // RuleId. The type of constant. Define global constant. Such as: CREATE_POST = " "; 
         public ActionResult NewPost(PostView NewPostView)
         {
             if(account==null)
@@ -92,6 +98,8 @@ namespace TLU.Blog.Controllers
                 pNewPost.Like = 0;
                 pNewPost.Dislike = 0;
                 pNewPost.Descrip = NewPostView.pDescrip;
+
+                // string.IsNullOrEmpty(value)
                 if (NewPostView.pDescrip == "" || NewPostView.Avatar == ""||NewPostView.pContent=="")
                 {
                     ViewBag.ListTopic = new TopicModel().GetListTopic();

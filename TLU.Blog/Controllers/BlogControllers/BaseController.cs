@@ -17,6 +17,7 @@ namespace TLU.Blog.Controllers
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
+            // If check ViewBag.Navigation is null call back. Caching ViewBag.Navigation. Not using Redis cache. Recommend using Solir solution
             ViewBag.Navigation = _db.Navigations.Where(x=>x.LangId==Blog.Helpers.BlogLang.CurrentLang).Where(x=>x.IsActive==true).OrderBy(x => x.OrderDisplay).ToList();
 
             ViewBag.Sologan = _db.Configs.Where(x=>x.LangId==BlogLang.CurrentLang).Where(x => x.Code == "Banner").ToList();
