@@ -7,7 +7,9 @@
     
 }
 <script src="~/Scripts/jquery-1.11.3.min.js"></script>
-<script>
+<script src="~/Scripts/jquery.signalR-2.1.2.min.js"></script>
+<script src="~/signalr/hubs"></script>
+@*<script>
     function AddComment(DivContent, PostId) {
         Content = document.getElementById(DivContent).value;
         $.ajax({
@@ -76,6 +78,56 @@
         document.getElementById(DivContent).value = "";
         document.getElementById('Reply_' + ParentId).style.display = "none";
     }
+</script>*@
+<script>
+    function ChangReply(DivContent) {
+        if (document.getElementById(DivContent).style.display == "none") {
+            document.getElementById(DivContent).style.display = "block";
+        }
+        else {
+            document.getElementById(DivContent).style.display = "none";
+        }
+
+    };
+    function SpEdit(Id) {
+        var content = 'Content_' + Id;
+        var edit = 'Edit_' + Id;
+        if (document.getElementById(content).style.display == "none") {
+            document.getElementById(content).style.display = "block";
+            document.getElementById(edit).style.display = "none";
+        }
+        else {
+            document.getElementById(content).style.display = "none";
+            document.getElementById(edit).style.display = "block";
+        }
+    };
+    function edit(Id) { };
+    $(function () {
+        var readTime = $.connection.readtimeData;
+        defineClientMethod(readTime);
+        //$.connection.hub.qs = { userLogged: user };
+        $.connection.hub.start().done(function () {
+            // các sự kiên và các hàm được gọi tương ứng với sự kiên đó
+           
+        });
+        // sử lý phần client sau mỗi lần gọi phương thức
+        function defineClientMethod(readTime) {
+            function a(PostId, Content, Count, Avatar, Name, Time) {
+                readTime.client.addComment = function (PostId, Content, Count, Avatar, Name, Time) {
+
+                };
+            };
+            function b(PostId, Content, Count, Avatar, Name, Time) {
+                readTime.client.addComment = function (PostId, Content, Count, Avatar, Name, Time) {
+
+                };
+            };
+            function Edit(Id) {
+                SpEdit(Id);
+            }
+            edit = Edit;
+        };
+    });
 </script>
 <div class="blog-head">
     <h2>@Model.Name</h2>
@@ -135,6 +187,7 @@
         </div>
         <div class="response">
             <h4>Responses</h4>
+            <div id="AddComment_@Model.ID"></div>
             @foreach (var item in (new CommentModel().GetCommentOrderByDate(Model.ID)))
             {
                 <div class="media response-info" id="DivComment_@item.ID">
@@ -146,9 +199,17 @@
                     </div>
                     <div class="media-body response-text-right">
                         <div id="CT_@item.ID">
-                            <p>
-                                @item.CommentContent
-                            </p>
+                            <div id="Content_@item.ID">
+                                <p>
+                                    @item.CommentContent
+                                </p>
+                            </div>
+                            <div id="Edit_@item.ID" style="display:none;">
+                                <textarea class="form-control" rows="3" placeholder="Enter ...">@item.CommentContent</textarea>
+                                <ul>
+                                    <li><input type="submit" value="Save" /></li>
+                                </ul>
+                            </div>
                         </div>
                         <ul>
                             <li>@item.CommentDate</li>
@@ -157,9 +218,13 @@
                             <li><input onclick="Remove(@item.ID)" type="submit" value="Remove"/></li>
                             <li><input onclick="CallEdit('CT_@item.ID',@item.ID)" type="submit" value="Edit" /></li>
                             }
+
+                            <li><input onclick="Remove(@item.ID)" type="submit" value="Remove" /></li>
+                            <li><input onclick="edit(@item.ID)" type="submit" value="Edit" /></li>
                             <li><input onclick="ChangReply('Reply_@item.ID')" type="submit" value="Reply" /></li>
                         </ul>
                         <div class="media response-info" id="ReplyAll_@item.ID">
+                            <div id="''AddReply_@Model.ID'+'_'+@item.ID"></div>
                             @foreach (var item2 in (new CommentModel().GetList(item.ID)))
                             {
                                 <div id="DivComment_@item2.ID">
@@ -171,9 +236,17 @@
                                     </div>
                                     <div class="media-body response-text-right">
                                         <div id="CT_@item2.ID">
-                                            <p>
-                                                @item2.CommentContent
-                                            </p>
+                                            <div id="Content_@item2.ID">
+                                                <p>
+                                                    @item.CommentContent
+                                                </p>
+                                            </div>
+                                            <div id="Edit_@item2.ID" style="display:none;">
+                                                <textarea class="form-control" rows="3" placeholder="Enter ...">@item2.CommentContent</textarea>
+                                                <ul>
+                                                    <li><input type="submit" value="Save" /></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <ul>
                                             <li>@item2.CommentDate</li>
@@ -182,6 +255,8 @@
                                                 <li><input onclick="Remove(@item2.ID)" type="submit" value="Remove" /></li>
                                                 <li><input onclick="CallEdit('CT_@item2.ID',@item2.ID)" type="submit" value="Edit" /></li>
                                             }
+                                            <li><input onclick="Remove(@item2.ID)" type="submit" value="Remove" /></li>
+                                            <li><input onclick="edit(@item2.ID)" type="submit" value="Edit" /></li>
                                         </ul>
                                     </div>
                                 </div>
